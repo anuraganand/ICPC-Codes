@@ -1,3 +1,4 @@
+// O(n)
 // length of odd palindrome centered at i = 2 * odd[i] + 1
 // length of even palindrome centered at i and i - 1 = 2 * even[i]
 
