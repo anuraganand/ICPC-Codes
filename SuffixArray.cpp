@@ -5,8 +5,8 @@
 // construciton - O(nlog^2n)
 // lcp for two indices - O(logn)
 
-#define N 10100
-#define LG 18
+#define N 100100
+#define LG 20
 int rank[N], sa[N], P[LG][N];
 
 struct SuffixArray {
@@ -35,6 +35,7 @@ struct SuffixArray {
                 P[lg][L[i].c] = (i > 0 && L[i].a == L[i - 1].a && L[i].b == L[i - 1].b) ? P[lg][L[i - 1].c] : i;
         }
         lg--;
+        for(int i = 0; i < len; i++) sa[i] = 0;
         for(int i = 0; i < len; i++) sa[P[lg][i]] = i;
         for(int i = 0; i < len; i++) rank[sa[i]] = i;
     }
@@ -51,5 +52,12 @@ struct SuffixArray {
             }
         }
         return l;
+    }
+
+    // gives number of unique substrings
+    ll numSubStrings() {
+        ll cnt = ((ll) len * (len + 1)) / 2;
+        rept(i, 1, len) cnt -= lcp(sa[i], sa[i - 1]);
+        return cnt;
     }
 };
