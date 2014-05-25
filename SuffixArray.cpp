@@ -10,7 +10,7 @@
 int rank[N], sa[N], P[LG][N];
 
 struct SuffixArray {
-    int lg, len;
+    int lg, len, cum[N];
     struct node {
         int a, b, c;
         bool operator < (const node & r) const {
@@ -18,7 +18,23 @@ struct SuffixArray {
                 return a < r.a;
             return b < r.b;
         }
-    }L[N];
+    } L[N], tmp[N];
+
+    //counting sort
+    inline int cSort(int idx) {
+        int n = max(300, len + 2), sum = 0;
+        for(int i = 0; i < n; i++) cum[i] = 0;
+        for(int i = 0; i < len; i++) {
+            if(idx) cum[L[i].a + 1]++;
+            else cum[L[i].b + 1]++;
+        }
+        for(int i = 0; i < n; i++) sum += cum[i], cum[i] = sum - cum[i];
+        for(int i = 0; i < len; i++) {
+            if(idx) tmp[cum[L[i].a + 1]++] = L[i];
+            else tmp[cum[L[i].b + 1]++] = L[i];
+        }
+        for(int i = 0; i < len; i++) L[i] = tmp[i];
+    }
 
     // construct suffix array "sa" for given string
     void construct(string s) {
@@ -30,7 +46,8 @@ struct SuffixArray {
                 L[i].b = i + shift < len ? P[lg - 1][i + shift] : -1;
                 L[i].c = i;
             }
-            sort(L, L + len);
+            cSort(0);
+            cSort(1);
             for(int i = 0; i < len; i++) 
                 P[lg][L[i].c] = (i > 0 && L[i].a == L[i - 1].a && L[i].b == L[i - 1].b) ? P[lg][L[i - 1].c] : i;
         }
@@ -55,9 +72,9 @@ struct SuffixArray {
     }
 
     // gives number of unique substrings
-    ll numSubStrings() {
-        ll cnt = ((ll) len * (len + 1)) / 2;
-        rept(i, 1, len) cnt -= lcp(sa[i], sa[i - 1]);
+    long long numSubStrings() {
+        long long cnt = ((long long) len * (len + 1)) / 2;
+        for(int i = 1; i < len; i++) cnt -= lcp(sa[i], sa[i - 1]);
         return cnt;
     }
 };
