@@ -13,11 +13,11 @@ struct DisjointSet
 	int getRoot(int k)
 	{
 		if(_par[k]==k) return k;
-		return _par[k]=getroot(_par[k]);
+		return _par[k]=getRoot(_par[k]);
 	}
 
 	void merge(int a, int b)
 	{
-		_par[getroot(a)]=getroot(b);
+		_par[getRoot(a)]=getRoot(b);
 	}
 };
