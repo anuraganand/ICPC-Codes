@@ -1,4 +1,4 @@
-/* Suffix automata code */
+/* Suffix automata code O(n) time complexity */
 /* This code is taken from http://e-maxx.ru/algo/suffix_automata */
 /* Array Version and Map Version.
 To convert to Map version comment the codes marked by 'Array version' and uncomment the codes marked by 'Map version'
