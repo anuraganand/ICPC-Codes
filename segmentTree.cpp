@@ -40,7 +40,8 @@ struct segmentTree {
 
     inline void resolve(int x, int l, int r) {
         if(T[x].push) {
-            T[x].sum = T[x].val * (r - l + 1);
+            T[x].sum = T[x].val * (r - l + 1); // To add the new value to the elements of the range
+                                               // instead of replacing the current value and put the new value, change = to +=
             if(l != r) {
                 T[l(x)].val = T[r(x)].val = T[x].val;
                 T[l(x)].push = T[r(x)].push = true;
