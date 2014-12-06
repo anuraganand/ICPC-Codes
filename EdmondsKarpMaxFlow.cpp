@@ -3,6 +3,7 @@
 */
 
 #define N 60 // Maximum number of nodes
+const int INF = 0x3f3f3f3f;
 
 struct MaxFlow
 {

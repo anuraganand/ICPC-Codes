@@ -3,7 +3,9 @@
 // query and insert function needs to be changed according to need
 
 
-#define CHILD_SIZE 2
+#define CHILD_SIZE 200
+
+int cntNode = 0;
 
 struct Trie {
 private:
@@ -12,6 +14,7 @@ private:
         int cnt;
 
         node() {
+            cntNode++;
             cnt = 0;
             for(int i = 0; i < CHILD_SIZE; ++i)
                 child[i] = NULL;
@@ -34,32 +37,19 @@ private:
     node * root;
 
 
-    void insert(node * cur, int num) {
-        for(int pos = 31; pos >= 0; --pos) {
-            int curBit = (num >> pos) & 1;
-            if(cur->child[curBit] == NULL) {
-                cur->child[curBit] = new node();
+    void insert(node * cur, string s) {
+        for(int i = 0; i < sz(s); ++i) {
+            int curPos = (int)s[i];
+            if(cur->child[curPos] == NULL) {
+                cur->child[curPos] = new node();
             }
-            cur = cur->child[curBit];
+            cur = cur->child[curPos];
         }
-    }
-
-    void query(node * cur, int num) {
-        int ret = 0;
-        for(int pos = 31; pos >= 0; --pos) {
-            int curBit = (num >> pos) & 1;
-            int canBit = curBit ^ 1;
-            if(cur->child[canBit] != NULL) {
-                canBit = curBit;
-            }
-            ret |= 1 << canBit;
-            cur = cur->child[canBit];
-        }
-        return ret;
     }
 public:
     Trie() {
-        root = NULL;
+        cntNode = 0;
+        root = new node();
     }
 
     ~Trie() {
@@ -67,7 +57,8 @@ public:
     }
 
     void clear() {
-        root = NULL;
+        cntNode = 0;
+        root = new node();
     }
 
     void insert(int num) {

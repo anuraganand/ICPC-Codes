@@ -13,11 +13,6 @@ struct SuffixArray {
     int lg, len, cum[N];
     struct node {
         int a, b, c;
-        bool operator < (const node & r) const {
-            if(a != r.a)
-                return a < r.a;
-            return b < r.b;
-        }
     } L[N], tmp[N];
 
     //counting sort
