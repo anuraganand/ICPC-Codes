@@ -3,6 +3,7 @@
 using namespace std;
 
 typedef long long ll;
+typedef long long lli;
 typedef pair <int,int> pii;
 typedef vector <int> vi;
 
