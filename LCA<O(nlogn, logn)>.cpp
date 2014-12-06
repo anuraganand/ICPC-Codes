@@ -9,6 +9,10 @@
 #define LG 20
 int parent[N], P[N][LG], level[N];
 
+// Initialisation should be levelwise, 
+// i.e all the parents of x must have been processed before x
+// We may run a dfs to do that
+ 
 inline void init(int x, int n) {
     for(int i = 0; i < LG; i++) P[x][i] = -1;
     P[x][0] = parent[x];
