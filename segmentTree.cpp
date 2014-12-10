@@ -14,7 +14,7 @@ struct node {
     bool push;
 
     inline void combine(const node & left, const node & right) {
-        sum = left.sum + right.sum;
+        sum = left.sum + right.sum;     // For max() change here
     }
 
 } T[N << 2];
@@ -38,7 +38,7 @@ struct segmentTree {
         T[x].combine(T[l(x)], T[r(x)]);
     }
 
-    inline void resolve(int x, int l, int r) {
+    inline void resolve(int x, int l, int r) {  // For max() change lines of this function
         if(T[x].push) {
             T[x].sum = T[x].val * (r - l + 1);  // To add the new value to the elements of the range
                                                 // instead of replacing the current value and putting the new value, change = to +=
@@ -72,7 +72,7 @@ struct segmentTree {
         if(l >= ql && r <= qr) return T[x].sum;
         ll ret = 0;
         int m = (l + r) >> 1;
-        if(ql <= m) ret += queryRange(l(x), l, m, ql, qr);
+        if(ql <= m) ret += queryRange(l(x), l, m, ql, qr);      // For max() change these two lines
         if(qr > m) ret += queryRange(r(x), m + 1, r, ql, qr);
         return ret;
     }
