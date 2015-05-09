@@ -18,7 +18,7 @@ struct node {
     }
 };
 /*
-    Palindrome Tree
+    Palindrome Tree : Creates all Palindromic Substrings with their Frequencies in O(n)
     T[1] = palindrome of length -1(Root for trie of odd length)
     T[0] = palindrome of length 0(Root for trie of even length)
     cnt : Contains frequency of palindrome of that node
