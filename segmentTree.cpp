@@ -85,3 +85,59 @@ struct segmentTree {
         return queryRange(0, 0, n - 1, ql, qr);
     }
 };
+
+struct segmentTree {
+    vi seg;
+    int n;
+    int type;
+    int segN;
+ 
+    segmentTree() {}
+ 
+    segmentTree(int m, int type) : n(m), type(type) {
+        int sz = n;
+        int segN;
+        for (segN = 2; segN < sz; segN <<= 1);
+        seg.assign(segN * 2, -1);
+        for (int i = 0; i < sz; ++i) {
+            seg[segN + i] = nxt[i][type];
+        }
+        for (int i = segN; --i; ) {
+            seg[i] = max(seg[i << 1], seg[i << 1 | 1]);
+        }
+    }
+
+    inline int query(int a, int b) {
+        int segN = seg.size() >> 1;
+        int ret = -1;
+        for (a += segN, b += segN; a <= b; a >>= 1, b >>= 1) {
+            if ( a & 1) ret = max(ret, seg[a++]);
+            if (~b & 1) ret = max(ret, seg[b--]);
+        }
+        return ret;
+    }
+
+    
+};
+
+node seg[2 * N]; // N is some power of two
+
+void add(int i, node x)
+{
+    seg[i += N] = x;
+    for(i /= 2; i; i /= 2)
+        seg[i] = merge(seg[i * 2], seg[i * 2 + 1]);
+}
+
+node get(int l, int r)
+{
+    node resL, resR;
+    for(l += N, r += N; l < r; l /= 2, r /= 2)
+    {
+        if(l % 2)
+            resL = merge(resL, seg[l++]);
+        if(r % 2)
+            resR = merge(seg[--r], resR);
+    }
+    return merge(resL, resR);
+}

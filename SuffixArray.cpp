@@ -1,5 +1,5 @@
 // N is the maximum length of string
-// LG is the ceil of the log of max length
+// LG is the ceil of the log of max length + 1
 // rank[i] = rank of suffix starting from i in the sorted sequence
 // sa[i] = position of the suffix in the string which is at i'th rank
 // construciton - O(nlog^2n)
@@ -13,6 +13,14 @@ struct SuffixArray {
     int lg, len, cum[N];
     struct node {
         int a, b, c;
+
+/*        bool operator < (const node & r) const {
+            if(a != r.a)
+                return a < r.a;
+            return b < r.b;
+        }
+*/
+
     } L[N], tmp[N];
 
     //counting sort
@@ -43,6 +51,7 @@ struct SuffixArray {
             }
             cSort(0);
             cSort(1);
+            /* sort(L, L + len) */
             for(int i = 0; i < len; i++) 
                 P[lg][L[i].c] = (i > 0 && L[i].a == L[i - 1].a && L[i].b == L[i - 1].b) ? P[lg][L[i - 1].c] : i;
         }

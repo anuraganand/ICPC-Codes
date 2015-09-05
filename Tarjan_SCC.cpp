@@ -11,7 +11,7 @@ vector<int> adl[NN];
 void tarjanSCC(int u) {
 	dfs_low[u] = dfs_num[u] = counter++; scc_vis[u] = true;
 	dfs_scc.push(u); in_stack[u] = true;
-	for(int i=0;i<adl[u].size();i++) {
+	for(int i = 0;i < adl[u].size();i++) {
 		int v = adl[u][i];
 		if(!scc_vis[v])
 			tarjanSCC(v);
@@ -21,7 +21,7 @@ void tarjanSCC(int u) {
 
 	if(dfs_low[u] == dfs_num[u]) {
 		// u is the root
-		while(dfs_scc.size()&&dfs_scc.top()!=u) {
+		while(dfs_scc.size() && dfs_scc.top() != u) {
 			in_stack[dfs_scc.top()] = 0;
 			// Do your action here
 			dfs_scc.pop();

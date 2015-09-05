@@ -1,3 +1,10 @@
+// Dinics Max Flow
+// To put lower bound on edge capacities form a new graph G' with source s' and t'
+// for each edge u->v in G with cap (low, high), replace it with
+// s'->v with low
+// v->t' with low
+// u->v with high - low
+
 const int inf = 0x3f3f3f3f;
 
 struct edge {
