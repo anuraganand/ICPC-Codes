@@ -9,7 +9,7 @@ void manacher(string s) {
     int n = (int)s.length();
     int l = 0, r = -1;
 
-    // calculate odd length palindromes centered at i
+    // compute odd length palindromes centered at i
     for(int i = 0; i < n; i++) {
         int k = (i > r ? 0 : min(odd[l + r - i], r - i)) + 1;
         while(i + k < n && i - k >= 0 && s[i - k] == s[i + k]) k++;
@@ -17,7 +17,7 @@ void manacher(string s) {
         if(i + k > r) l = i - k, r = i + k;
     }
 
-    // calculate even length palindromes centered at i and i - 1
+    // compute even length palindromes centered at i and i - 1
     l = 0, r = -1;
     for(int i = 0; i < n; i++) {
         int k = (i > r ? 0 : min(even[l + r - i + 1], r - i + 1)) + 1;
