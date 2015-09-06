@@ -29,3 +29,19 @@ typedef vector <int> vi;
 #define dbs(x) cerr << (x) << " "
 
 #define foreach(c, it) for(__typeof(c.begin()) it = c.begin(); it != c.end(); ++it)
+
+#define dbg(...) dbs(#__VA_ARGS__, __VA_ARGS__)
+template <class T> void dbs(string str, T t) {
+    cerr << str << " : " << t << "\n";
+}
+template <class T, class... S> void dbs(string str, T t, S... s) {
+    int idx = str.find(',');
+    cerr << str.substr(0, idx) << " : " << t << ",";
+    dbs(str.substr(idx + 1), s...);
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    return 0;
+}
