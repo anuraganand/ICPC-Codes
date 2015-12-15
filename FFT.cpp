@@ -29,61 +29,61 @@ typedef vector <int> vi;
 
 #define foreach(c, it) for(__typeof(c.begin()) it = c.begin(); it != c.end(); ++it)
 
-int key(int k,int p) {
-    p = 1 << (p-1);
-    int r = 0;
-    while(k) {
-        if(k & 1) r += p;
-        p >>= 1;
-        k >>= 1;
+// change long double in typedef to double if TLE
+typedef complex <long double> complex_t;
+const long double PI = acos((long double)-1.0);
+
+void fft(vector <complex_t>& a, int s = 1) {
+    int n = (int)a. size();
+
+    for (int i = 1, j = 0; i < n; ++i) {
+        int bit = n >> 1 ;
+        for (; j >= bit; bit >>= 1)
+            j -= bit;
+        j += bit;
+        if (i < j)
+            swap (a[i], a[j]);
     }
-    return r;
-}
 
-
-void FFT(vector < CD > &A,int s) {
-    int n = A.size();
-    int p = 0;
-    while(n > 1) p++,n >>= 1;
-    n = 1 << p;
-    vector < CD > aa(A);
-    rep(i,0,n) A[key(i,p)] = aa[i];
-    CD w,wn,t,u;
-    int m,r;
-    rep(i,1,p+1) {
-        m = 1 << i;
-        r = m >> 1;
-        wn = CD( cos(s*2*M_PI/(double)m), sin(s*2*M_PI/(double)m) );
-        w = 1.0;
-        rep(j,0,r){
-            for(int k = j; k < n ; k += m) {
-                t = w * A[k + r];
-                u = A[k];
-                A[k] = u + t;
-                A[k + r] = u - t;
+    for (int len = 2; len <= n; len <<= 1) {
+        long double ang = 2 * s * PI / len;
+        complex_t wlen(cos(ang), sin(ang));
+        for (int i = 0 ; i < n ; i += len) {
+            complex_t w(1);
+            for (int j = 0 ; j < len / 2 ; ++ j) {
+                complex_t u = a[i + j] ,  v = a[i + j + len / 2] * w ;
+                a[i + j] = u + v ;
+                a[i + j + len / 2] = u - v ;
+                w *= wlen ;
             }
-            w = w * wn;
         }
     }
-    if(s==-1){
-    for(int i = 0;i<n;++i)
-         A[i] /= (double)n;
-    }
+    if (s == -1)
+        for (int i = 0; i < n; ++i)
+            a[i] /= n;
 }
 
-vector< CD > Multiply(vector< CD > &P, vector< CD > &Q){
-    int n = P.size()+Q.size();
-    int p = 1;
-    while(p < n) p <<= 1;
-    n = p;
-    P.resize(n,0);
-    Q.resize(n,0);
-    FFT(P,1);
-    FFT(Q,1);
-    vector< CD > R;
-    for(int i=0;i<n;i++) R.push_back(P[i]*Q[i]);
-    FFT(R,-1);
-    return R;
+typedef long long ll;
+// change ll to complex_t if needed
+vector <ll> multiply (const vector<ll>& a, const vector<ll>& b) {
+    vector <complex_t> fa(a.begin(), a.end()), fb(b.begin(), b.end());
+    int n = 1;
+    while (n < max(a.size(), b.size()))
+        n <<= 1;
+    n <<= 1;
+    fa.resize(n), fb.resize(n);
+
+    fft(fa), fft(fb);
+
+    for (int i = 0; i < n; ++i)
+        fa[i] *= fb[i];
+
+    fft (fa, -1);
+
+    vector <ll> res(n);
+    for (size_t i = 0; i < n; ++i)
+        res[i] = (ll) (fa[i].real() + 0.5);
+    return res;
 }
 
 int main() {
