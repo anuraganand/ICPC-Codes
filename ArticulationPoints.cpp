@@ -6,28 +6,25 @@
 vector <int> adl[N];    // Adjacency list
 int art[N],visited[N]; // initialize art and visited by 0
 int dn[N],parent[N];   // initialize parent to -1
-int low[N],cnt;        // initialize cnt to 0
-// root is also an articulation point if it has > 1 child
-int dfsart(int v)
-{
-    int c = -1;
-    visited[v] = 1;
-    dn[v] = cnt++;
-    low[v] = dn[v];
-    for(int i=0; i < adl[v].size(); i++)
-    {
-        if(visited[adl[v][i]])
-        {
-            if(adl[v][i] != parent[v]) low[v] = min(low[v], dn[adl[v][i]]);
-        }
-        else
-        {
-            c++;
-            parent[adl[v][i]] = v;
-            dfsart(adl[v][i]);
-            if(low[adl[v][i]] >= dn[v]) art[v]=1;
-            low[v] = min(low[v], low[adl[v][i]]);
+int timer, tin[N], fup[N]; // initialize timer to 0
+
+void dfsart(int v, int p = -1) {
+    visited[v] = true;
+    tin[v] = fup[v] = timer++;
+    int children = 0;
+    for (int i=0; i<adl[v].size(); ++i) {
+        int to = adl[v][i];
+        if (to == p)  continue;
+        if (visited[to])
+            fup[v] = min (fup[v], tin[to]);
+        else {
+            dfsart (to, v);
+            fup[v] = min (fup[v], fup[to]);
+            if (fup[to] >= tin[v] && p != -1)
+                art[v] = 1;
+            ++children;
         }
     }
-    return c;
+    if (p == -1 && children > 1)
+        art[v] = 1;
 }

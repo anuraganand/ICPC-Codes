@@ -42,25 +42,25 @@ struct MinCostMaxFlow {
         fill(dad.begin(), dad.end(), -1);
         fill(dist.begin(), dist.end(), INF);
         fill(found.begin(), found.end(), 0);
-        queue<int> Q;
+        queue <int> Q;
         dist[s] = 0;
         Q.push(s);
         found[s] = true;
         
         while(!Q.empty()) {
-          int u = Q.front(); Q.pop();
-          if(u==t) continue;
-          for (int i =0; i < G[u].size(); ++i) {
-            edge &pres = E[G[u][i]];
-            int v = pres.v;
-            if(pres.flow <= 0) continue;
-            if(dist[u]  + pres.cost < dist[v]){
-                dad[v] = G[u][i];
-                dist[v] = dist[u] + pres.cost;
-                if(!found[v]) Q.push(v), found[v] = true;
+            int u = Q.front(); Q.pop();
+            if(u == t) continue;
+            for (int i = 0; i < G[u].size(); ++i) {
+                edge &pres = E[G[u][i]];
+                int v = pres.v;
+                if(pres.flow <= 0) continue;
+                if(dist[u] + pres.cost < dist[v]) {
+                    dad[v] = G[u][i];
+                    dist[v] = dist[u] + pres.cost;
+                    if(!found[v]) Q.push(v), found[v] = true;
+                }
             }
-          }
-          found[u] = false;
+            found[u] = false;
         }
         return (dad[t] != -1);
     }
@@ -72,7 +72,7 @@ struct MinCostMaxFlow {
         }
         for(int i = dad[t]; i != -1; i = dad[E[i].u]) {
             E[i].flow -= flow;
-            E[i^1].flow += flow;
+            E[i ^ 1].flow += flow;
         }
         return flow;
     }
